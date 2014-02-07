@@ -10,6 +10,8 @@
 #define getpid() _getpid()
 #endif
 
+#define VALIDATE(x) if (!(x)) { printUsage(); exit(EXIT_FAILURE); }
+
 void printUsage()
 {
 	std::cout << std::endl;
@@ -88,12 +90,7 @@ int main(int argc, char** argv)
 
 	// Parse arguments
 	argc--; argv++;
-
-	if (argc == 0)
-	{
-		printUsage();
-		return -1;
-	}
+	VALIDATE(argc != 0);
 
 	if (strcmp(*argv, "check") == 0)
 	{
@@ -104,41 +101,15 @@ int main(int argc, char** argv)
 	if (strcmp(*argv, "yes") == 0)
 	{
 		argc--; argv++;
-		if (argc != 2)
-		{
-			printUsage();
-			return -1;
-		}
+		VALIDATE(argc == 2);
 
 		int odds, chaos;
-		if (!(std::stringstream(std::string(*(argv))) >> odds))
-		{
-			printUsage();
-			return -1;
-		}
-
-		if (odds < -4 || odds > 6)
-		{
-			std::cout << odds << "?" << std::endl;
-			printUsage();
-			return -1;
-		}
-
-		if (!(std::stringstream(std::string(*(argv+1))) >> chaos))
-		{
-			printUsage();
-			return -1;
-		}
-
-		if (chaos < 1 || chaos > 9)
-		{
-			std::cout << chaos << "?" << std::endl;
-			printUsage();
-			return -1;
-		}
+		VALIDATE(std::stringstream(std::string(*(argv))) >> odds);
+		VALIDATE(std::stringstream(std::string(*(argv+1))) >> chaos);
+		VALIDATE(odds >= -4 && odds <= 6);
+		VALIDATE(chaos >= 1 && chaos <= 9);
 
 		rollYesNo(odds, chaos);
-
 		return 0;
 	}
 	
