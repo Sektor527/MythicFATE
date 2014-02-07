@@ -2,8 +2,13 @@
 #include <cstring>
 #include <iostream>
 #include <sstream>
-#include <time.h>
+#include <ctime>
 #include <vector>
+
+#if WIN32
+#include <process.h>
+#define getpid() _getpid()
+#endif
 
 void printUsage()
 {
@@ -16,8 +21,24 @@ void printUsage()
 	std::cout << std::endl;
 }
 
+void rollFateDice()
+{
+	std::vector<char> values;
+	values.push_back('+');
+	values.push_back('-');
+	values.push_back(' ');
+
+	for (int i = 0; i < 4; ++i)
+	{
+		char value = values[rand() % values.size()];
+		std::cout << " [" << value << "]";
+	}
+}
+
 int main(int argc, char** argv)
 {
+	srand(time(NULL) * getpid());
+
 	// Parse arguments
 	argc--; argv++;
 
@@ -26,6 +47,14 @@ int main(int argc, char** argv)
 		printUsage();
 		return -1;
 	}
+
+	if (strcmp(*argv, "check") == 0)
+	{
+		rollFateDice();
+		return 0;
+	}
+
+	printUsage();
 
 	return 0;
 }
