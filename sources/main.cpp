@@ -15,11 +15,11 @@
 void printUsage()
 {
 	std::cout << std::endl;
-	std::cout << "MythicFATE dice roller, copyright 2014 Wim Vanherle" << std::endl << std::endl;
-	std::cout << "Usage:" << std::endl << std::endl;
-	std::cout << "  fate check                    roll four FATE dice" << std::endl;
-	std::cout << "  fate yes <odds> <chaos>       roll for a yes/no answer, where <odds> is in [-4,6] and <chaos> is in [1,9]" << std::endl;
-	std::cout << "  fate event                    create a random event" << std::endl;
+	std::cout << "MythicFATE dice roller, copyright 2014 Wim Vanherle" << std::endl;
+	std::cout << "Usage:" << std::endl;
+	std::cout << "  fate c/check                    roll four FATE dice" << std::endl;
+	std::cout << "  fate y/yes <odds> <chaos>       roll for a yes/no answer, where <odds> is in [-4,6] and <chaos> is in [1,9]" << std::endl;
+	std::cout << "  fate e/event                    create a random event" << std::endl;
 	std::cout << std::endl;
 }
 
@@ -314,13 +314,13 @@ int main(int argc, char** argv)
 	argc--; argv++;
 	VALIDATE(argc != 0);
 
-	if (strcmp(*argv, "check") == 0)
+	if (strcmp(*argv, "check") == 0 || strcmp(*argv, "c") == 0)
 	{
 		rollFateDice();
 		return 0;
 	}
 
-	if (strcmp(*argv, "yes") == 0)
+	if (strcmp(*argv, "yes") == 0 || strcmp(*argv, "y") == 0)
 	{
 		argc--; argv++;
 		VALIDATE(argc == 2);
@@ -335,7 +335,7 @@ int main(int argc, char** argv)
 		return 0;
 	}
 
-	if (strcmp(*argv, "event") == 0)
+	if (strcmp(*argv, "event") == 0 || strcmp(*argv, "e") == 0)
 	{
 		rollEvent();
 		return 0;
